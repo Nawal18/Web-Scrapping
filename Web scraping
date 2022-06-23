@@ -1,0 +1,61 @@
+import bs4
+import requests
+import html5lib
+import sys
+import tkinter as tk
+from PIL import Image, ImageTk
+#GUI
+root = tk.Tk()
+root.geometry('600x400')
+root.title("Web Scrapper")
+
+def scrapping():
+    try:
+        url = requests.get(URL.get())
+        res = bs4.BeautifulSoup(url.text,"html.parser")
+
+        #File handling
+        #text
+        savefile1 = open("Web_text.txt", "a")
+        for i in res.select("p"):
+            savefile1.write(i.getText())
+        savefile1.close()
+
+
+    except:
+        print(" Errr an Error occurred!: INCORRECT FORM OF DATA HAS BEEN ENTERED... PLEASE TRY AGAIN")
+
+    finally:
+        print("Thank you for using web scrapper!!!!!!")
+#canvas
+canvas = tk.Canvas(root, width=600, height=300)
+canvas.grid(columnspan=3, rowspan=3)
+
+#logo
+logo = Image.open('ws.png')
+logo = logo.resize((100,100))
+logo = ImageTk.PhotoImage(logo)
+logo_label = tk.Label(image=logo)
+logo_label.image = logo
+logo_label.grid(column=1, row=0)
+
+#Entry box
+URL = tk.StringVar()
+Ent = tk.Entry(root, textvariable=URL)
+Ent.grid(row=2, columnspan=3, column=0)
+Ent.focus()
+
+
+#instructions
+instruction = tk.Label(root, text="WEB SCRAPPER", font='Raleway')
+instruction.grid(row=1, columnspan=3, column=0)
+#Browse_button
+browse_text = tk.StringVar()
+browse_btn = tk.Button(root, textvariable=browse_text, font='Raleway', command = scrapping, bg = 'teal', fg='white', height=2 , width=15)
+browse_text.set('BROWSE')
+browse_btn.grid(column=1, row=3)
+
+canvas = tk.Canvas(root, width=600, height=250)
+canvas.grid(columnspan=3)
+
+root.mainloop()
